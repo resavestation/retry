@@ -5,7 +5,8 @@ async function retryCallback(callback, retry) {
       return await callback();
     } catch {
       count++;
-      console.log("重試:", i);
+      await new Promise(r => setTimeout(r, 1000));
+      console.log("重試:", i+1);
     }
   }
   return `總共錯誤 ${count} 次`;
