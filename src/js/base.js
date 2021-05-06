@@ -1,18 +1,14 @@
-async function retryCallback(callback, retryTotal, retry) {
-  !retry && (retry = 0);
-  try {
-    const data = await callback();
-    return data;
-  } catch {
-    if (retry < retryTotal) {
-      retry++;
-      console.log("重試次數:", retry);
-      return retryCallback(callback, retryTotal, retry)
-    }
-    else {
-      return `失敗${retry}次`;
+async function retryCallback(callback, retry) {
+  let count = 0;
+  for (let i = 0; i < retry; i++) {
+    try {
+      return await callback();
+    } catch {
+      count++;
+      console.log("重試:", i);
     }
   }
+  return `總共錯誤 ${count} 次`;
 }
 const getData = async () => {
   console.log('starting request 1');
